@@ -40,7 +40,7 @@ function submit() {
                             :errors="v.errors.password"/>
 
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <UButton>Login</UButton>
+                        <UButton :loading="auth.loginReq.loading">Login</UButton>
                     </div>
 
                     <div class="text-right">
