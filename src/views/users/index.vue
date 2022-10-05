@@ -42,86 +42,76 @@ watch(() => users.req.params, () => {
 
         <!--        <create-user-modal/>-->
 
-        <div class="card mb-4">
-            <div class="top-scrollbar">
-                <table class="table table-hover top-scrollbar-content">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>
-                            <ApmFilter
-                                field-name="name"
-                                field-label="Name"
-                                v-model="users.req.params"
-                            />
-                        </th>
-                        <th>
-                            <ApmFilter
-                                field-name="email"
-                                field-label="Email"
-                                v-model="users.req.params"
-                            />
-                        </th>
-                        <th>
-                            <ApmFilter
-                                field-name="is_admin"
-                                field-label="Is Admin"
-                                v-model="users.req.params"
-                            />
-                        </th>
-                        <th></th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-if="users.req.loading">
-                        <td colspan="50">
-                            <ULoading/>
-                        </td>
-                    </tr>
-                    <tr v-for="user in users.req.data.data" :key="user.id">
-                        <td>{{ user.id }}</td>
-                        <td>
-                            <ApmEditable
-                                type="text"
-                                field="name"
-                                :url="`/users/${user.id}`"
-                                v-model="user.name"
-                            ></ApmEditable>
-                        </td>
-                        <td>
-                            <ApmEditable
-                                type="text"
-                                field="email"
-                                :url="`/users/${user.id}`"
-                                v-model="user.email"
-                            ></ApmEditable>
-                        </td>
-                        <td>
-                            <ApmEditable
-                                type="text"
-                                field="password"
-                                :url="`/users/${user.id}`"
-                                v-model="user.password"
-                            ></ApmEditable>
-                        </td>
-                        <td>
-                            <ApmEditable
-                                type="text"
-                                field="is_admin"
-                                :url="`/users/${user.id}`"
-                                v-model="user.is_admin"
-                            ></ApmEditable>
-                        </td>
-                        <td class="table-actions">
-                            <apm-delete-btn :url="`/users/${user.id}`" @on-success="users.send()"></apm-delete-btn>
-                        </td>
-                    </tr>
-                    <tr v-if="!users.req.loading && !users.req.data?.data?.length">
-                        <td colspan="50" class="text-muted">No records found.</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+        <div class="card mb-4" style="min-height: 30em">
+            <table class="w100 table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>
+                        <ApmFilter
+                            field-name="name"
+                            field-label="Name"
+                            v-model="users.req.params"
+                        />
+                    </th>
+                    <th>
+                        <ApmFilter
+                            field-name="email"
+                            field-label="Email"
+                            v-model="users.req.params"
+                        />
+                    </th>
+                    <th>
+                        <ApmFilter
+                            field-name="is_admin"
+                            field-label="Is Admin"
+                            v-model="users.req.params"
+                        />
+                    </th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-if="users.req.loading">
+                    <td colspan="50">
+                        <ULoading/>
+                    </td>
+                </tr>
+                <tr v-for="user in users.req.data.data" :key="user.id">
+                    <td>{{ user.id }}</td>
+                    <td>
+                        <ApmEditable
+                            type="text"
+                            field="name"
+                            :url="`/users/${user.id}`"
+                            v-model="user.name"
+                        ></ApmEditable>
+                    </td>
+                    <td>
+                        <ApmEditable
+                            type="text"
+                            field="email"
+                            :url="`/users/${user.id}`"
+                            v-model="user.email"
+                        ></ApmEditable>
+                    </td>
+                    <td>
+                        <ApmEditable
+                            type="text"
+                            field="is_admin"
+                            :url="`/users/${user.id}`"
+                            v-model="user.is_admin"
+                        ></ApmEditable>
+                    </td>
+                    <td class="table-actions">
+                        <apm-delete-btn :url="`/users/${user.id}`" @on-success="users.send()"></apm-delete-btn>
+                    </td>
+                </tr>
+                <tr v-if="!users.req.loading && !users.req.data?.data?.length">
+                    <td colspan="50" class="text-muted">No records found.</td>
+                </tr>
+                </tbody>
+            </table>
             <!--            <apm-pagination :resource="users" class="justify-content-center"/>-->
         </div>
     </div>
