@@ -18,6 +18,14 @@ const v = useValidator(users.form, (v: Validator) => {
     v.addRule(emailRule('email'))
 })
 
+function save() {
+    v.validate()
+    if (v.hasErrors) return
+    users.create().then(res => {
+        router.back()
+    })
+}
+
 </script>
 
 <template>
@@ -26,8 +34,12 @@ const v = useValidator(users.form, (v: Validator) => {
         :model-value="true"
         @cancel="router.back()"
         ok-title="Save"
+        @ok="save"
+        :ok-loading="users.createReq.loading"
+        cancel-title="Back"
+        size="sm"
     >
-        <form>
+        <form @submit.prevent="save">
             <UInput
                 v-model="users.form.name"
                 label="Name"

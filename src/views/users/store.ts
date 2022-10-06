@@ -1,7 +1,9 @@
 import { defineStore } from 'pinia'
 import { FetchRequest } from '@/helpers/fetch-request'
 import { toFormData } from '@/helpers/misc'
+import { useNotify } from '@/U/composables/Notifiy'
 
+const notify = useNotify()
 const form = {
   name: '',
   email: '',
@@ -12,7 +14,14 @@ const form = {
 export const useUsersStore = defineStore('users', {
   state: () => ({
     form: { ...form },
-    req: new FetchRequest('users', 'GET').withProps({ pagination: true, delay: 500 }),
+    req: new FetchRequest('users', 'GET').withProps({
+      pagination: true,
+      delay: 500,
+      params: {
+        sort: 'id',
+        sortType: 'desc',
+      },
+    }),
     createReq: new FetchRequest('users', 'POST')
   }),
   getters: {},
@@ -21,10 +30,19 @@ export const useUsersStore = defineStore('users', {
       this.req.send()
     },
     create() {
-      this.createReq.send({
+      return this.createReq.send({
         body: toFormData(this.form)
       }).then(res => {
+        this.req.data = this.req.data || { data: [] }
+        // @ts-ignore
+        this.req.data.data = this.req.data.data || []
+        // @ts-ignore
+        this.req.data.data.unshift(res)
+        // @ts-ignore
+        this.req.data.data.pop()
         this.resetForm()
+
+        notify.success('Success', 'User created')
       })
     },
     resetForm() {
