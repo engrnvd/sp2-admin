@@ -19,7 +19,7 @@ const numPages = computed(() => Math.ceil(props.req.data.total / props.req.param
             Showing {{ req.data.from }} - {{ req.data.to }} of {{ req.data.total }}
         </div>
         <div class="buttons d-flex align-items-center justify-content-center gap-4 flex-grow-1" v-if="numPages > 1">
-            <UIconBtn :disabled="req.params.page <= 1">
+            <UIconBtn :disabled="req.params.page <= 1" @click="req.params.page --">
                 <ChevronLeftIcon/>
             </UIconBtn>
             <UIconBtn
@@ -28,7 +28,7 @@ const numPages = computed(() => Math.ceil(props.req.data.total / props.req.param
                 :disabled="req.params.page === n"
             >{{ n }}
             </UIconBtn>
-            <UIconBtn :disabled="req.params.page >= numPages">
+            <UIconBtn :disabled="req.params.page >= numPages" @click="req.params.page ++">
                 <ChevronRightIcon/>
             </UIconBtn>
         </div>

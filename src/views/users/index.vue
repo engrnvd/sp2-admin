@@ -6,10 +6,10 @@ import PlusIcon from '@/material-design-icons/Plus.vue'
 import UIconBtn from '@/U/components/UIconBtn.vue'
 import ApmFilter from '@/components/common/crud/ApmFilter.vue'
 import ApmEditable from '@/components/common/crud/ApmEditable.vue'
-import LoadingRow from '@/components/common/crud/LoadingRow.vue'
 import NotFoundRow from '@/components/common/crud/NotFoundRow.vue'
 import ApmDeleteBtn from '@/components/common/crud/ApmDeleteBtn.vue'
 import ApmPagination from '@/components/common/crud/ApmPagination.vue'
+import MainLoader from '@/components/common/MainLoader.vue'
 import { onMounted, watch } from 'vue'
 
 const users = useUsersStore()
@@ -75,7 +75,6 @@ watch(() => users.req.params, () => {
                 </tr>
                 </thead>
                 <tbody>
-                <LoadingRow :req="users.req"/>
                 <tr v-for="user in users.req.data.data" :key="user.id">
                     <td>{{ user.id }}</td>
                     <td>
@@ -109,6 +108,7 @@ watch(() => users.req.params, () => {
                 <NotFoundRow :req="users.req"/>
                 </tbody>
             </table>
+            <MainLoader v-if="users.req.loading"/>
         </div>
         <ApmPagination :req="users.req"/>
     </div>
