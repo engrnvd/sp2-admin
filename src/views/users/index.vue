@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ULoading from '@/U/components/ULoading.vue'
 import { useUsersStore } from '@/views/users/store'
 import CloudDownloadIcon from '@/material-design-icons/CloudDownload.vue'
 import ReloadIcon from '@/material-design-icons/Reload.vue'
@@ -7,6 +6,10 @@ import PlusIcon from '@/material-design-icons/Plus.vue'
 import UIconBtn from '@/U/components/UIconBtn.vue'
 import ApmFilter from '@/components/common/crud/ApmFilter.vue'
 import ApmEditable from '@/components/common/crud/ApmEditable.vue'
+import LoadingRow from '@/components/common/crud/LoadingRow.vue'
+import NotFoundRow from '@/components/common/crud/NotFoundRow.vue'
+import ApmDeleteBtn from '@/components/common/crud/ApmDeleteBtn.vue'
+import ApmPagination from '@/components/common/crud/ApmPagination.vue'
 import { onMounted, watch } from 'vue'
 
 const users = useUsersStore()
@@ -72,11 +75,7 @@ watch(() => users.req.params, () => {
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-if="users.req.loading">
-                    <td colspan="50">
-                        <ULoading/>
-                    </td>
-                </tr>
+                <LoadingRow :req="users.req"/>
                 <tr v-for="user in users.req.data.data" :key="user.id">
                     <td>{{ user.id }}</td>
                     <td>
@@ -104,15 +103,13 @@ watch(() => users.req.params, () => {
                         ></ApmEditable>
                     </td>
                     <td class="table-actions">
-                        <apm-delete-btn :url="`/users/${user.id}`" @on-success="users.send()"></apm-delete-btn>
+                        <ApmDeleteBtn :req="users.req" :id="user.id"/>
                     </td>
                 </tr>
-                <tr v-if="!users.req.loading && !users.req.data?.data?.length">
-                    <td colspan="50" class="text-muted">No records found.</td>
-                </tr>
+                <NotFoundRow :req="users.req"/>
                 </tbody>
             </table>
-            <!--            <apm-pagination :resource="users" class="justify-content-center"/>-->
         </div>
+        <ApmPagination :req="users.req"/>
     </div>
 </template>
