@@ -15,7 +15,7 @@ import { onMounted, watch } from 'vue'
 const users = useUsersStore()
 
 onMounted(() => {
-    users.load()
+    if (!users.req.hasLoadedData) users.load()
 })
 
 watch(() => users.req.params, () => {
@@ -45,8 +45,8 @@ watch(() => users.req.params, () => {
 
         <!--        <create-user-modal/>-->
 
-        <div class="card mb-4" style="min-height: 30em">
-            <table class="w100 table-hover">
+        <div class="card p-4" style="min-height: 30em">
+            <table class="w100 table-hover crud-table">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -109,7 +109,7 @@ watch(() => users.req.params, () => {
                 </tbody>
             </table>
             <MainLoader v-if="users.req.loading"/>
+            <ApmPagination class="mt-4" :req="users.req"/>
         </div>
-        <ApmPagination :req="users.req"/>
     </div>
 </template>

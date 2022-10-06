@@ -14,7 +14,7 @@ const numPages = computed(() => Math.ceil(props.req.data.total / props.req.param
 </script>
 
 <template>
-    <div class="card p-4 apm-pagination d-flex gap-4 align-items-center" v-if="req.data?.data?.length">
+    <div class="p-4 apm-pagination d-flex gap-4 align-items-center" v-if="req.data?.data?.length">
         <div class="info text-muted">
             Showing {{ req.data.from }} - {{ req.data.to }} of {{ req.data.total }}
         </div>
@@ -45,4 +45,9 @@ const numPages = computed(() => Math.ceil(props.req.data.total / props.req.param
 </template>
 
 <style scoped>
+
+.apm-pagination {
+    font-size: 0.75rem;
+}
+
 </style>
