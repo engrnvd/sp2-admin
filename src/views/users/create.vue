@@ -1,45 +1,64 @@
-<template>
-    <b-modal id="createUserModal"
-             ref="createUserModal"
-             title="Add New User"
-             hide-footer
-             modal-class="modal-right">
-        <apm-form action="/users" v-model="form">
-            <apm-form-element field="name" label="Name" :model="form">
-                <b-form-input v-model="form.name"/>
-            </apm-form-element>
-            <apm-form-element field="email" label="Email" :model="form">
-                <b-form-input v-model="form.email"/>
-            </apm-form-element>
-            <apm-form-element field="password" label="Password" :model="form">
-                <b-form-input v-model="form.password"/>
-            </apm-form-element>
-            <apm-form-element field="is_admin" label="Is Admin" :model="form">
-                <switches v-model="form.is_admin" theme="custom" color="primary"></switches>
-            </apm-form-element>
-            <b-button variant="outline-secondary" @click="$refs.createUserModal.hide()" class="mr-2">Cancel</b-button>
-            <b-button variant="primary" type="submit" class="mr-1">Save</b-button>
-        </apm-form>
-    </b-modal>
-</template>
+<script setup lang="ts">
+import UModal from '@/U/components/UModal.vue'
+import UInput from '@/U/components/UInput.vue'
+import { requiredRule } from '@/Vee/rules/required.rule'
+import { useValidator } from '@/Vee/useValidator'
+import { useUsersStore } from '@/views/users/store'
+import { Validator } from '@/Vee/validator'
+import { emailRule } from '@/Vee/rules/email.rule'
+import { useRouter } from 'vue-router'
 
-<script>
-    export default {
-        name: "CreateUserModal",
-        props: {},
-        data() {
-            return {
-                form: {
-                    name: '',
-                    email: '',
-                    password: '',
-                    is_admin: '',
-                }
-            }
-        },
-        methods: {}
-    }
+const router = useRouter()
+const users = useUsersStore()
+
+const v = useValidator(users.form, (v: Validator) => {
+    v.addRule(requiredRule('name'))
+    v.addRule(requiredRule('email'))
+    v.addRule(requiredRule('password'))
+    v.addRule(emailRule('email'))
+})
+
 </script>
+
+<template>
+    <UModal
+        title="Add New User"
+        :model-value="true"
+        @cancel="router.back()"
+        ok-title="Save"
+    >
+        <form>
+            <UInput
+                v-model="users.form.name"
+                label="Name"
+                :errors="v.errors.name"
+                class="mb-4"
+            />
+
+            <UInput
+                v-model="users.form.email"
+                label="Email"
+                type="email"
+                :errors="v.errors.email"
+                class="mb-4"
+            />
+
+            <UInput
+                v-model="users.form.password"
+                label="Password"
+                :errors="v.errors.password"
+                class="mb-4"
+            />
+
+            <UInput
+                v-model="users.form.is_admin"
+                label="Is Admin"
+                :errors="v.errors.is_admin"
+                class="mb-4"
+            />
+        </form>
+    </UModal>
+</template>
 
 <style scoped>
 

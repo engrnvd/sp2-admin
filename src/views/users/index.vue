@@ -11,7 +11,9 @@ import ApmDeleteBtn from '@/components/common/crud/ApmDeleteBtn.vue'
 import ApmPagination from '@/components/common/crud/ApmPagination.vue'
 import MainLoader from '@/components/common/MainLoader.vue'
 import { onMounted, watch } from 'vue'
+import { useRouter, RouterView } from 'vue-router'
 
+const router = useRouter()
 const users = useUsersStore()
 
 onMounted(() => {
@@ -25,11 +27,12 @@ watch(() => users.req.params, () => {
 
 <template>
     <div>
+        <RouterView/>
         <div class="d-flex align-items-center gap-2 px-4">
             <div class="flex-grow-1">
                 <h2>Users</h2>
             </div>
-            <UIconBtn tooltip="Create a new User">
+            <UIconBtn tooltip="Create a new User" @click="router.push('/users/create')">
                 <PlusIcon/>
             </UIconBtn>
             <UIconBtn tooltip="Download CSV" @click.prevent="users.load()">
@@ -42,9 +45,6 @@ watch(() => users.req.params, () => {
                 <ReloadIcon/>
             </UIconBtn>
         </div>
-
-        <!--        <create-user-modal/>-->
-
         <div class="card p-4" style="min-height: 30em">
             <table class="w100 table-hover crud-table">
                 <thead>
