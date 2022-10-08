@@ -9,6 +9,14 @@ const router = createRouter({
   // @ts-ignore
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/sitemaps',
+      component: () => import('../views/sitemaps/index.vue'),
+      children: [
+        { path: 'create', component: () => import('../views/sitemaps/create.vue') }
+      ]
+    },
+
 // vue routes generated here. Do not remove this line.
     { path: '/', name: 'home', component: HomeView, },
     {
