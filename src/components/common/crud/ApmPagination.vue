@@ -32,9 +32,10 @@ const numPages = computed(() => Math.ceil(props.req.data.total / props.req.param
                 <ChevronRightIcon/>
             </UIconBtn>
         </div>
-        <div class="per-page text-muted">
-            Per page
-            <select v-model="req.params.perPage" style="outline: none; border: none">
+        <div v-else class="flex-grow-1"></div>
+        <div class="per-page text-muted d-flex align-items-center">
+            Per page:
+            <select class="text-muted" v-model="req.params.perPage" style="outline: none; border: none">
                 <option>10</option>
                 <option>20</option>
                 <option>50</option>
