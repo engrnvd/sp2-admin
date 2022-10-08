@@ -3,16 +3,19 @@ export class Validator {
   rules = {}
   form
 
-  constructor(form) {
+  constructor(form: Object) {
     this.form = form
   }
 
   get hasErrors() {
+    // @ts-ignore
     return Object.values(this.errors).flat().length > 0
   }
 
-  setError(field, message) {
+  setError(field: string, message: string) {
+    // @ts-ignore
     this.errors[field] = this.errors[field] || []
+    // @ts-ignore
     this.errors[field].push(message)
   }
 
@@ -20,21 +23,25 @@ export class Validator {
     this.errors = {}
   }
 
-  addRule(rule) {
+  addRule(rule: [string, string, Function], condition: Function = () => true) {
     const [fieldName, message, fn] = rule
-    this.addCustomRule(fieldName, message, fn)
+    this.addCustomRule(fieldName, message, fn, condition)
   }
 
-  addCustomRule(field, message, validationFn) {
+  addCustomRule(field: string, message: string, validationFn: Function, condition: Function = () => true) {
+    // @ts-ignore
     this.rules[field] = this.rules[field] || []
-    this.rules[field].push({ message, validationFn })
+    // @ts-ignore
+    this.rules[field].push({ message, validationFn, condition })
   }
 
-  validateField(fieldName) {
+  validateField(fieldName: string) {
+    // @ts-ignore
     this.errors[fieldName] = []
+    // @ts-ignore
     let rules = this.rules[fieldName]
     for (const rule of rules) {
-      if (!rule.validationFn(this)) {
+      if (rule.condition(this) && !rule.validationFn(this)) {
         this.setError(fieldName, rule.message)
       }
     }

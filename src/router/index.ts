@@ -27,6 +27,7 @@ const router = createRouter({
         }
       ],
     },
+    { path: '/email-verified', component: () => import('@/views/EmailVerifiedView.vue') },
     ...devModeRoutes,
   ]
 })
