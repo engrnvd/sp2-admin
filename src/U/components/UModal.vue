@@ -11,7 +11,7 @@
                     <div class="apm-modal-body" :class="bodyClass">
                         <slot></slot>
                     </div>
-                    <div v-if="!noFooter" class="apm-modal-footer d-flex gap-4">
+                    <div v-if="!noFooter" class="apm-modal-footer d-flex">
                         <slot name="footer">
                             <UButton @click="ok" :loading="okLoading" :disabled="okDisabled">{{ okTitle }}</UButton>
                             <UButton secondary v-if="!okOnly" @click="cancel">{{ cancelTitle }}</UButton>
