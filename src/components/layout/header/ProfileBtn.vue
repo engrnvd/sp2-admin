@@ -13,6 +13,12 @@ import UButton from '@/U/components/UButton.vue'
 
 const auth = useAuthStore()
 const router = useRouter()
+
+function logout() {
+    auth.logout().then(d => {
+        router.push('/')
+    })
+}
 </script>
 
 <template>
@@ -23,7 +29,7 @@ const router = useRouter()
             <span v-else class="font-weight-bold">{{ auth.user.name[0] }}</span>
         </UButton>
         <template #content>
-            <div class="py-3" style="min-width: 12em;">
+            <div class="py-2" style="min-width: 12em;">
                 <div class="text-muted text-small px-4 py-2">
                     <div class="font-weight-bold mb-2">{{ auth.user.name }}</div>
                     <div>{{ auth.user.email }}</div>
@@ -42,7 +48,7 @@ const router = useRouter()
                     Projects
                 </UMenuItem>
                 <hr class="my-2">
-                <UMenuItem @click="auth.logout()">
+                <UMenuItem @click="logout">
                     <LogoutIcon/>
                     Logout
                 </UMenuItem>
