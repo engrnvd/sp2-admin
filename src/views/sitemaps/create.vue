@@ -42,6 +42,25 @@ function save() {
                 :errors="v.errors.name"
                 class="mb-4"
             />
+            <UInput
+                v-model="sitemaps.form.owner_id"
+                label="Owner Id"
+                :errors="v.errors.owner_id"
+                class="mb-4"
+            />
+            todo: switch
+            <UInput
+                v-model="sitemaps.form.tree"
+                label="Tree"
+                :errors="v.errors.tree"
+                class="mb-4"
+            />
+            <UInput
+                v-model="sitemaps.form.sections"
+                label="Sections"
+                :errors="v.errors.sections"
+                class="mb-4"
+            />
         </form>
     </UModal>
 </template>

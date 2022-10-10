@@ -71,6 +71,20 @@ watch(() => sitemaps.req.params, () => {
                             v-model="sitemaps.req.params"
                         />
                     </th>
+                    <th>
+                        <ApmFilter
+                            field-name="tree"
+                            field-label="Tree"
+                            v-model="sitemaps.req.params"
+                        />
+                    </th>
+                    <th>
+                        <ApmFilter
+                            field-name="sections"
+                            field-label="Sections"
+                            v-model="sitemaps.req.params"
+                        />
+                    </th>
                     <th></th>
                 </tr>
                 </thead>
@@ -99,6 +113,22 @@ watch(() => sitemaps.req.params, () => {
                             field="is_template"
                             :url="`/sitemaps/${sitemap.id}`"
                             v-model="sitemap.is_template"
+                        ></ApmEditable>
+                    </td>
+                    <td>
+                        <ApmEditable
+                            type="text"
+                            field="tree"
+                            :url="`/sitemaps/${sitemap.id}`"
+                            v-model="sitemap.tree"
+                        ></ApmEditable>
+                    </td>
+                    <td>
+                        <ApmEditable
+                            type="text"
+                            field="sections"
+                            :url="`/sitemaps/${sitemap.id}`"
+                            v-model="sitemap.sections"
                         ></ApmEditable>
                     </td>
                     <td>

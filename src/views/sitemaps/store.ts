@@ -8,6 +8,8 @@ const form = {
   name: '',
   owner_id: '',
   is_template: '',
+  tree: '',
+  sections: '',
 }
 
 export const useSitemapsStore = defineStore('sitemaps', {
