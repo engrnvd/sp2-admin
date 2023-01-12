@@ -5,10 +5,10 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main-sp2" ]
+    branches: [ "main-sp2-admin" ]
 env:
-  MAIN_DIR: app.figmaps.com
-  SUB_DIR: sp2-web-app
+  MAIN_DIR: admin.figmaps.com
+  SUB_DIR: sp2-admin
 
 jobs:
   build:
