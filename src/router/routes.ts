@@ -37,6 +37,24 @@ const router = createRouter({
         }
       ],
     },
+    {
+      path: '/profile',
+      name: 'profile',
+      meta: { auth: true },
+      component: () => import('../views/profile/Profile.page.vue'),
+      children: [
+        {
+          name: 'change-password',
+          path: 'change-password',
+          component: () => import('../views/profile/ChangePassword.page.vue'),
+        },
+        {
+          path: 'delete-account',
+          name: 'delete-account',
+          component: () => import('../views/profile/DeleteAccount.page.vue'),
+        },
+      ]
+    },
     { path: '/email-verified', component: () => import('@/views/EmailVerifiedView.vue') },
     ...devModeRoutes,
   ]

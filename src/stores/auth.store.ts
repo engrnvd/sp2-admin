@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
+import type { User } from 'src/interfaces/User.interface'
 import { useStorage } from '../composables/useStorage'
 import { TOKEN_KEY, USER_KEY } from '../constants'
 import { FetchRequest } from '../helpers/fetch-request'
-import { toFormData } from '../helpers/misc'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -21,7 +21,7 @@ export const useAuthStore = defineStore('auth', {
     logoutReq: new FetchRequest('logout', 'POST'),
     forgotReq: new FetchRequest('forgot-password', 'POST'),
     resetReq: new FetchRequest('reset-password', 'POST'),
-    user: useStorage(USER_KEY),
+    user: useStorage(USER_KEY) as User,
     authToken: useStorage(TOKEN_KEY),
   }),
   getters: {
@@ -37,28 +37,28 @@ export const useAuthStore = defineStore('auth', {
     },
     register() {
       return this.signupReq.send({
-        body: toFormData(this.form)
+        body: JSON.stringify(this.form)
       }).then((data: any) => {
         this.logUserIn(data)
       })
     },
     login() {
       return this.loginReq.send({
-        body: toFormData(this.form)
+        body: JSON.stringify(this.form)
       }).then((data: any) => {
         this.logUserIn(data)
       })
     },
     sendForgotReq() {
       return this.forgotReq.send({
-        body: toFormData({ email: this.form.email })
+        body: JSON.stringify({ email: this.form.email })
       }).then((data: any) => {
         this.logUserIn(data)
       })
     },
     resetPassword() {
       return this.resetReq.send({
-        body: toFormData({ email: this.form.email, otp: this.form.otp, password: this.form.newPassword })
+        body: JSON.stringify({ email: this.form.email, otp: this.form.otp, password: this.form.newPassword })
       }).then((data: any) => {
         this.logUserIn(data)
       })

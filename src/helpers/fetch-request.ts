@@ -7,11 +7,10 @@
 * pagination: Whether to request paginated data. Type: Bool. Default: false
 * paginationMode: replace | append. Type: Bool. Default: 'replace'. Set to 'append' to implement "load more" feature)
 * */
-import { TOKEN_KEY, USER_KEY } from '../constants'
+import { _deepClone } from 'src/helpers/misc'
 import { env } from '../env'
 import { useAuthStore } from '../stores/auth.store'
-import { useNotify } from '@/U/composables/Notifiy/index'
-import { Storage } from './storage-helper'
+import { useNotify } from 'src/U/composables/Notifiy'
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'OPTIONS' | 'DELETE' | 'HEAD' | 'CONNECT' | 'TRACE'
 
@@ -19,11 +18,11 @@ export class FetchRequest {
   url
   firstRequest = true
   lastRequestId: any = null
-  data = []
+  data: any = []
   error = ''
   loading = false
   loaded = false
-  perPageOriginal = null
+  perPageOriginal: number = null
   allLoaded = false
   config: RequestInit = {}
   delay = 0
@@ -80,7 +79,7 @@ export class FetchRequest {
     if (typeof res === 'string') this.error = res
     else this.error = res?.message || res?.error || res
 
-    const logoutErrors = ['Wrong number of segments', 'logged out', 'You are not logged in!']
+    const logoutErrors = ['Wrong number of segments', 'logged out', 'You are not logged in!', 'Unauthenticated.']
     if (logoutErrors.includes(this.error)) {
       this.logoutAndRefresh()
     }
@@ -90,17 +89,20 @@ export class FetchRequest {
   }
 
   logoutAndRefresh() {
-    let loggedIn = Storage.get(TOKEN_KEY)
-    if (loggedIn) {
-      Storage.remove(USER_KEY)
-      Storage.remove(TOKEN_KEY)
-    }
+    const auth = useAuthStore()
+    auth.user = null
+    auth.authToken = null
+    window.location.reload()
+  }
 
-    // todo
-    // store.commit('user/setAuthToken', '')
-    // store.commit('user/setUser', null)
-    // store.commit('menu/toggleUserMenuValues', userMenuItems)
-    // store.commit('menu/toggleLoginModal', true)
+  appendParams(url: string) {
+    let params = _deepClone(this.params)
+    if (!this.pagination) {
+      delete params.page
+      delete params.perPage
+    }
+    let query = new URLSearchParams(params).toString()
+    return query ? url + '?' + query : url
   }
 
   send(config: RequestInit = {}) {
@@ -139,10 +141,7 @@ export class FetchRequest {
           config.headers.Authorization = `Bearer ${token}`
         }
 
-        if (this.params) {
-          // @ts-ignore
-          url += '?' + new URLSearchParams(this.params)
-        }
+        if (this.params) url = this.appendParams(url)
 
         // @ts-ignore
         fetch(url, config).then(async (res: Response) => {
@@ -196,7 +195,7 @@ export class FetchRequest {
     })
   }
 
-  upload(config: RequestInit, files = [], key = 'attachments', single = false) {
+  upload(config: RequestInit, files: any[] = [], key = 'attachments', single = false) {
     if (files instanceof File) {
       // @ts-ignore
       files = [files]

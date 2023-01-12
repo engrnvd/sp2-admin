@@ -1,3 +1,16 @@
+export function applyMixins(derivedCtor: any, constructors: any[]) {
+  constructors.forEach((baseCtor) => {
+    Object.getOwnPropertyNames(baseCtor.prototype).forEach((name) => {
+      Object.defineProperty(
+        derivedCtor.prototype,
+        name,
+        Object.getOwnPropertyDescriptor(baseCtor.prototype, name) ||
+        Object.create(null)
+      )
+    })
+  })
+}
+
 export function toFormData(dataObject) {
   let formData = new FormData
   for (const key in dataObject) {
@@ -33,16 +46,6 @@ export function showSimpleToast(text, duration = 3000) {
   setTimeout(() => {
     div.remove()
   }, duration)
-}
-
-export function _debounce(func, timeout = 300) {
-  let timer
-  return (...args) => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      func.apply(this, args)
-    }, timeout)
-  }
 }
 
 export function _sleep(milliseconds) {
@@ -89,4 +92,8 @@ export function cssFontSize() {
 
 export function randomArrayItem(arr: any[]) {
   return arr[randomInt(0, arr.length)]
+}
+
+export function lastItem(arr: any[]) {
+  return arr[arr.length - 1]
 }
